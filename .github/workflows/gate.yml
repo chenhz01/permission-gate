@@ -11,6 +11,13 @@ jobs:
       - name: help loads
         run: python gate.py --help
       - name: run bundled example
-        # the example is designed to FAIL — that is what the gate is for
-        continue-on-error: true
-        run: gate.py audit --manifest examples/tools.json --policy examples/policy.json --min-score 80
+        # the example is designed to FAIL — that is what the gate is for.
+        # but it must actually run and actually say something: empty output = broken gate.
+        run: |
+          set +e
+          python gate.py audit --manifest examples/tools.json --policy examples/policy.json --min-score 80 > out.txt 2>&1
+          code=$?
+          cat out.txt
+          echo "exit=$code (non-zero is expected here)"
+          test -s out.txt || { echo "no output — gate did not run"; exit 1; }
+          exit 0
