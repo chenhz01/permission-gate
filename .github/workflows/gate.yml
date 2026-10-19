@@ -1,0 +1,16 @@
+name: permission-gate
+on: [push, pull_request]
+jobs:
+  self-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: help loads
+        run: python gate.py --help
+      - name: run bundled example
+        # the example is designed to FAIL — that is what the gate is for
+        continue-on-error: true
+        run: gate.py audit --manifest examples/tools.json --policy examples/policy.json --min-score 80

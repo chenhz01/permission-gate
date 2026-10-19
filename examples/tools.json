@@ -1,0 +1,43 @@
+{
+  "tools": [
+    {
+      "name": "docs_search",
+      "ops": [
+        "read"
+      ]
+    },
+    {
+      "name": "fs",
+      "ops": [
+        "read",
+        "write",
+        "delete"
+      ]
+    },
+    {
+      "name": "shell",
+      "ops": [
+        "exec"
+      ]
+    },
+    {
+      "name": "http",
+      "ops": [
+        "network"
+      ]
+    },
+    {
+      "name": "mail",
+      "ops": [
+        "send"
+      ]
+    },
+    {
+      "name": "db",
+      "ops": [
+        "query",
+        "mutate"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+name: permission-gate
+description: Score how much more your agent can do than it should.
+branding:
+  icon: shield
+  color: blue
+inputs:
+  args:
+    description: Arguments passed to gate.py
+    required: false
+    default: "--help"
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: python "${{ github.action_path }}/gate.py" ${{ inputs.args }}

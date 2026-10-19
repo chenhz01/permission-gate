@@ -1,0 +1,9 @@
+{
+  "allow": [
+    "docs_search:read",
+    "fs:read"
+  ],
+  "deny": [
+    "fs:delete"
+  ]
+}

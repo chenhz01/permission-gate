@@ -1,0 +1,11 @@
+permission-gate
+Copyright 2026 chenhz01
+
+This product includes software developed as part of the agent-gates series.
+
+Dual license:
+  - Source code ........ Apache License 2.0 (LICENSE)
+  - Documentation ...... CC BY 4.0 (LICENSE-SPEC)
+
+If you redistribute this work or a derivative, keep this NOTICE and the attribution
+"agent-gates series by chenhz01" with a link to https://github.com/chenhz01/permission-gate.
