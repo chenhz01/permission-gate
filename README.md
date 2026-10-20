@@ -109,6 +109,66 @@ mistaken for "it inspected my files".
 
 边界：It does not observe runtime calls; a perfectly scoped policy can still be abused.
 
+### 互推：只装一个的话，装哪个
+
+十五个链接是迷宫，一个症状是门。按上表挑一个，其余九个在下面 [The gates](#the-gates)。
+每个仓都能单独活：复制 `gate.py`，一条命令跑完，不共享运行时、不装包、不加配置。
+有星就给这一个，没有也不影响任何仓的可用性——没有任何门是「先给星才能用」。
+
+### 热门前置：保证结构，不保证排名
+
+本页承诺的是 **15 项可机器复核的结构特征**，当前 **15/15**（2026-10-20 复核）。
+GitHub 从未公开 Trending 的排序算法，所以任何「保证上热门」的说法都在描述一件它不可能知道的事；
+本仓不这么说。跑 `python hotness.py` 可自行复算每一条。
+
+## Start here (if you install only one)
+
+Fifteen links is a maze; one symptom is a door. Find your symptom, install that gate,
+ignore the rest until it hurts.
+
+| what you are seeing | install this |
+|---|---|
+| the bill is 10x normal and the trace is a wall of the same step | **[loop-gate](https://github.com/chenhz01/loop-gate)** |
+| the agent can delete prod and nobody signed off on that | **permission-gate** ← you are here |
+| answers get worse after truncation and nobody knows what got dropped | **[context-gate](https://github.com/chenhz01/context-gate)** |
+| two rules in the prompt contradict each other; the model obeys neither | **[instruction-gate](https://github.com/chenhz01/instruction-gate)** |
+| AI text ships with fabricated links and empty phrases | **[output-gate](https://github.com/chenhz01/output-gate)** |
+| half the repo might be dead and nobody can prove which half | **[deadcode-gate](https://github.com/chenhz01/deadcode-gate)** |
+
+A gate you did not need is a gate you uninstall, so nothing here says "install all
+fifteen". Each repo stands alone: copy `gate.py`, run one command, no shared runtime,
+no package manager, no config file to grow.
+
+**On stars.** If this one saved you an incident, star it — that is the only signal I get
+about which gate to build next. There is no exchange: starring one repo does not owe me
+a star on another, and no gate here is unlocked by a star. Star trading breaks GitHub's
+rules and would poison the single honest metric this project has.
+
+## Hot-ready guarantee
+
+What is guaranteed is **structure**, not ranking. Fifteen properties, each one
+machine-checked against this repo — current score **15/15** (2026-10-20).
+
+Plain version: instead of asking you to trust a badge, I list what I actually checked,
+name the script that checks it, and let you re-run it. If one of these lines is false,
+that is a bug in my repo, not a matter of taste.
+
+- Falsifiable side: `python hotness.py` re-runs every check and prints the evidence line
+  for each one. You do not have to trust this paragraph.
+- Non-falsifiable side: GitHub has never published how Trending sorts repositories, so
+  any repo promising you a guaranteed spot is telling you something it cannot know.
+  This one does not make that promise.
+- If a claim on this page stops being true, that is a bug: open an issue and it gets
+  fixed in the same week, not in the next launch.
+
+What actually carries this repo:
+
+- the command in this README is byte-for-byte the command CI runs <sub>(89-char argv, exact match)</sub>
+- the output block is a real run of `examples/`, not a mock-up <sub>(Real output section)</sub>
+- CI asserts the exit code, so the badge can turn red — and it has <sub>(asserts exit=1)</sub>
+- every fixture is committed, so a fresh clone reproduces the output <sub>(2 files under examples/ tracked in git)</sub>
+- `* -text` in `.gitattributes`: same bytes on Windows and Linux <sub>(.gitattributes * -text)</sub>
+
 ## The gates
 
 | # | gate | what it stops |
