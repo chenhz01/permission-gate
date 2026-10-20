@@ -157,9 +157,24 @@ def check(repo):
     add("ci_can_fail", ('if [ "$code" !=' in wf) or 'exit 1' in wf, "asserts exit code")
 
     # 9 pinnable version
+    # 拿不到 tag 不等于「没有钉版本」：`git clone --depth 1` 和 GitHub 的
+    # "Download ZIP" 都拿不到 tag，而这两种正是新读者最常用的方式。
+    # 2026-10-20 实测：线上真跑一遍，浅克隆被判 14/15 并打印
+    # "A claim on the README page is currently false" —— 检查器在自己的仓上
+    # 诬告自己。读者的克隆方式不是作者的 bug，判据必须跟着证据可得性降级。
     tags = [t for t in git(repo, "tag", "--list").split() if t.startswith("v")]
-    add("pinnable", bool(tags) and ("@" + sorted(tags)[-1]) in readme,
-        "tag %s" % (sorted(tags)[-1] if tags else "none"))
+    pin = re.search(r"@(v\d+\.\d+\.\d+)", readme)
+    if tags:
+        ok = bool(pin) and pin.group(1) in tags and ("@" + sorted(tags)[-1]) in readme
+        ev = "tag %s" % sorted(tags)[-1]
+        if not ok:
+            ev += " (README pins %s)" % (pin.group(1) if pin else "nothing")
+    else:
+        # 只能判「README 里有没有一个形如 @vX.Y.Z 的钉子」，并明写证据不足的原因
+        ok = bool(pin)
+        ev = ("pinned %s" % pin.group(1) if pin else "no pin in README") + \
+             " (no local tag list: shallow clone, ZIP download, or tags not fetched)"
+    add("pinnable", ok, ev)
 
     # 10 license five-piece + SPDX on every source file
     lic = all(os.path.exists(os.path.join(repo, f)) for f in ("LICENSE", "LICENSE-SPEC", "NOTICE"))
@@ -182,8 +197,20 @@ def check(repo):
     add("cn_brief", ("## 中文速览" in readme) or cjk >= 200, "%d CJK chars" % cjk)
 
     # 14 fixtures committed
+    # 没有 git（ZIP 下载解压出来）时 ls-files 恒为空 —— 那不能说「fixture 没提交」，
+    # 只能说「这个副本提供不了提交证据」。有 .git 时判据保持严格。
     tracked = [x for x in git(repo, "ls-files", "examples").splitlines() if x.strip()]
-    add("fixture_tracked", len(tracked) >= 1, "%d file(s) tracked" % len(tracked))
+    if tracked:
+        add("fixture_tracked", True, "%d file(s) tracked" % len(tracked))
+    elif not os.path.isdir(os.path.join(repo, ".git")):
+        on_disk = []
+        for root, dirs, files in os.walk(os.path.join(repo, "examples")):
+            dirs[:] = [x for x in dirs if x != "__pycache__"]
+            on_disk += files
+        add("fixture_tracked", len(on_disk) >= 1,
+            "%d file(s) in examples/ (no .git here, so 'tracked' cannot be proven)" % len(on_disk))
+    else:
+        add("fixture_tracked", False, "0 file(s) tracked — examples/ is empty or ignored")
 
     # 15 byte-stable checkouts
     add("byte_stable", "-text" in read(os.path.join(repo, ".gitattributes")), ".gitattributes * -text")
