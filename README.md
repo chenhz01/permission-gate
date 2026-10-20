@@ -81,17 +81,20 @@ Python 3.9+. Nothing to `pip install` — stdlib only.
 # .github/workflows/gates.yml
 - uses: actions/checkout@v4
 
-- uses: chenhz01/permission-gate@v0.1.0
+- uses: chenhz01/permission-gate@v0.1.2
   with:
     # IMPORTANT: this path is inside YOUR repository.
     # The examples/ in this repo are NOT in your workspace — pass your own files.
     args: "audit --manifest path/to/tools.json --policy path/to/policy.json --min-score 80"
 ```
 
-Pin the tag (`@v0.1.0`) rather than `@main` — `main` moves.
+Pin the tag (`@v0.1.2`) rather than `@main` — `main` moves.
+Check [Releases](https://github.com/chenhz01/permission-gate/releases) for the newest tag; `v0.1.0` predates the
+fix that makes a mistyped path fail instead of silently passing.
 
 If you omit `args`, the action only prints help and exits 0. It raises a warning
-annotation so a green check is never mistaken for "it inspected my files".
+annotation — quoting this gate's own correct usage — so a green check is never
+mistaken for "it inspected my files".
 
 
 ## 中文速览
