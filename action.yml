@@ -1,15 +1,21 @@
 name: permission-gate
-description: Agent permission audit: score how much more your AI agent can do than it should. Zero-dependency CLI.
+description: 'Agent permission audit: score how much more your AI agent can do than it should. Zero-dependency CLI.'
 branding:
   icon: shield
   color: blue
 inputs:
   args:
-    description: Arguments passed to gate.py
+    description: 'Arguments for gate.py, e.g. "check path/to/trajectory.jsonl". Paths are relative to YOUR repo, not this action.'
     required: false
     default: "--help"
 runs:
   using: composite
   steps:
+    # 没有参数时只打印帮助并 exit 0 —— 那会显示成绿色但什么都没检查。
+    # 这里显式告警，避免「装了但没检查」被误当成已通过。
+    - shell: bash
+      if: ${{ inputs.args == '' || inputs.args == '--help' }}
+      run: |
+        echo "::warning title=permission-gate::No args given - this gate inspected nothing. Pass with: args: check path/to/your/file"
     - shell: bash
       run: python "${{ github.action_path }}/gate.py" ${{ inputs.args }}
