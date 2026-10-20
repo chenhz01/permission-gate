@@ -11,13 +11,21 @@ jobs:
       - name: help loads
         run: python gate.py --help
       - name: run bundled example
-        # the example is designed to FAIL — that is what the gate is for.
-        # but it must actually run and actually say something: empty output = broken gate.
+        # Runs the documented example exactly as the README shows it, then asserts
+        # the exit code equals the value registered for this gate.
+        # Before 2026-10-20 this step only checked "output is non-empty" and ended
+        # with exit 0 — so two gates whose example errored on a fresh clone
+        # (exit 2) still showed a green badge. A self-check that cannot go red
+        # is decoration.
         run: |
           set +e
           python gate.py audit --manifest examples/tools.json --policy examples/policy.json --min-score 80 > out.txt 2>&1
           code=$?
           cat out.txt
-          echo "exit=$code (non-zero is expected here)"
           test -s out.txt || { echo "no output — gate did not run"; exit 1; }
+          if [ "$code" != "1" ]; then
+            echo "::error title=permission-gate::exit=$code but the documented example exits 1. A gate that errors on its own example is not a passing self-check."
+            exit 1
+          fi
+          echo "exit=$code (expected 1)"
           exit 0
