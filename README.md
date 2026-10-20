@@ -54,7 +54,7 @@ Being explicit here is cheaper than a wrong expectation later.
 
 ## Exit codes
 
-`0` = clean, `1` = findings. Gate your pipeline on `$?`.
+`0` = a report was produced. `1` = score below `--min-score`. `2` = bad input. **Without `--min-score` this command never fails — it measures, it does not judge.**
 
 ## Install
 
