@@ -1,5 +1,5 @@
 name: permission-gate
-description: Score how much more your agent can do than it should.
+description: Agent permission audit: score how much more your AI agent can do than it should. Zero-dependency CLI.
 branding:
   icon: shield
   color: blue

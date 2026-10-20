@@ -6,7 +6,7 @@
 
 <p align="center"><b>Score how much more your agent can do than it should.</b><br><sub>one file · zero dependencies · stdlib only</sub></p>
 
-<p align="center"><img src="https://img.shields.io/badge/python-3.9%2B-3776AB?style=flat-square" alt="python"> <img src="https://img.shields.io/badge/dependencies-0-2ea44f?style=flat-square" alt="deps"> <img src="https://img.shields.io/badge/license-Apache--2.0%20%2B%20CC%20BY%204.0-blue?style=flat-square" alt="license"></p>
+<p align="center"><a href="https://github.com/chenhz01/permission-gate/actions/workflows/gate.yml"><img src="https://github.com/chenhz01/permission-gate/actions/workflows/gate.yml/badge.svg" alt="tests"></a> <img src="https://img.shields.io/badge/python-3.9%2B-3776AB?style=flat-square" alt="python"> <img src="https://img.shields.io/badge/dependencies-0-2ea44f?style=flat-square" alt="deps"> <img src="https://img.shields.io/badge/license-Apache--2.0%20%2B%20CC%20BY%204.0-blue?style=flat-square" alt="license"></p>
 
 ---
 
