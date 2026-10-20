@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2026 chenhz01 — see LICENSE, LICENSE-SPEC and NOTICE
 """permission-gate — least-privilege surface audit for AI agent tool permissions.
 
 Static analysis only. Reads a tool manifest (tools x operations) and a
